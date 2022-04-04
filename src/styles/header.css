@@ -1,0 +1,19 @@
+.logo {
+	height: 5.5em;
+}
+.logoContainer {
+	padding: 0;
+}
+.logoContainer:hover {
+	background-color: "transparent";
+}
+.tabWrapper {
+	text-decoration: none;
+	color: #fff;
+}
+
+.ballMenu {
+	width: 40px;
+	height: 40px;
+	float: left;
+}
