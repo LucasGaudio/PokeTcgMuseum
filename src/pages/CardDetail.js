@@ -1,26 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles, useTheme } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
-import useMediaQuerry from "@mui/material/useMediaQuery";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, useTheme } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { getAllCardsWithSameName, getSet, getArtist } from "../store/actions/setsActions";
-
+import { createTheme } from "@mui/material/styles";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import allPokemonNameData from "../assets/json/allPokemonNames.json";
 
 import defaultCardImage from "../assets/images/card_back_side.png";
 
-const useStyles = makeStyles(theme => ({
+const theme = createTheme();
+const useStyles = makeStyles(() => ({
 	cardImageContainer: {
 		perspective: 1000,
 	},
 	cardImage: {
 		width: "65%",
-		height: "auto",
 		borderRadius: 21,
 		display: "inline",
 		boxShadow: "5px 5px 6px rgb(0 0 0 / 45%)",
+		[theme.breakpoints.down("lg")]: {
+			width: "65%",
+		},
+		[theme.breakpoints.down("md")]: {
+			width: "80%",
+		},
 	},
 
 	cardInner: {
@@ -33,8 +40,7 @@ const useStyles = makeStyles(theme => ({
 		backfaceVisibility: "hidden",
 		overflow: "hidden",
 		position: "absolute",
-		width: "100%",
-		height: "100%",
+		// width: "100%",
 		display: "flex",
 		alignItems: "center",
 		justifyContent: "center",
@@ -44,7 +50,6 @@ const useStyles = makeStyles(theme => ({
 		backfaceVisibility: "hidden",
 		overflow: "hidden",
 		width: "100%",
-		height: "100%",
 		display: "flex",
 		alignItems: "center",
 		justifyContent: "center",
@@ -59,6 +64,9 @@ const useStyles = makeStyles(theme => ({
 
 	blockWrapper: {
 		width: "665px",
+		[theme.breakpoints.down("md")]: {
+			width: "auto",
+		},
 	},
 	typeImage: {
 		width: "1.6em",
@@ -66,6 +74,10 @@ const useStyles = makeStyles(theme => ({
 	},
 	detailWrapper: {
 		marginBottom: 20,
+		[theme.breakpoints.down("md")]: {
+			marginBottom: 0,
+			padding: 15,
+		},
 	},
 	abilitieImage: {
 		marginRight: 20,
@@ -73,6 +85,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	detailTitle: {
 		marginBottom: 10,
+		[theme.breakpoints.down("md")]: {
+			textAlign: "center",
+		},
 	},
 	detailText: {
 		marginLeft: 4,
@@ -112,18 +127,28 @@ export default function CardDetail({
 }) {
 	const classes = useStyles();
 	const theme = useTheme();
+	const matches = useMediaQuery(theme.breakpoints.down("md"));
 
 	const [onlyThePokemonName, setOnlyThePokemonName] = useState(pokemonCardDetails.name);
 	const [flipCard, setFlipCard] = useState(false);
 
+	const fixedCardName = pokemonCardDetails.name.toLowerCase();
+
+	console.log("onlyThePokemonName", onlyThePokemonName.toLowerCase().replace(/ /g, "+"));
+
 	const dispatch = useDispatch();
 
 	let specificPokemonNamesArray = [];
+	console.log("pokemonCardDetails", pokemonCardDetails);
 
+	//TODO inves de pegar o removedpokemonNameList, pegar direto o nome do pokemon da lista
+	// console.log("data", allPokemonNameData[pokemonCardDetails.nationalPokedexNumbers]);
 	const removedpokemonNameList = [
 		"Rapid Strike ",
 		"Single Strike ",
+		"Radiant",
 		"Dark ",
+		"Light ",
 		"Shining ",
 		"Brock's ",
 		"Misty's ",
@@ -137,22 +162,36 @@ export default function CardDetail({
 		"Team Magma's ",
 		"Team Aqua's ",
 		"M ",
+		"White ",
+		"Black ",
+		"Detective ",
 		" δ",
 		" Star",
 		" ex",
 		"-EX",
 		"-GX",
 		"VMAX",
+		"VSTAR",
+		"V-UNION",
 		" V",
-		" G",
 		" GL",
-		" C",
+		" G",
 		"LV.X",
 		" E4",
 		" FB",
 		" ◇",
 		" LEGEND",
 	];
+
+	const searchCardName = e => {
+		console.log("e", e);
+		console.log(
+			"allPokemonNameData[e - 1].name.toLocaleLowerCase()",
+			allPokemonNameData[e - 1].name.toLocaleLowerCase()
+		);
+
+		return allPokemonNameData[e - 1].name.toLocaleLowerCase();
+	};
 
 	const handlesetSpecificPokemonName = i => {
 		specificPokemonNamesArray.push(i);
@@ -166,9 +205,11 @@ export default function CardDetail({
 
 	const changePokemonName = () => {
 		let cardName = pokemonCardDetails.name;
+
+		console.log("cardName", cardName);
 		// let newPokemonName = cardName.replace(
-		// 	specificPokemonNamesArray.map(i => i),
-		// 	""
+		//  specificPokemonNamesArray.map(i => i),
+		//  ""
 		// );
 		let newPokemonName;
 		if (specificPokemonNamesArray.length === 1) {
@@ -189,31 +230,31 @@ export default function CardDetail({
 		// let cardName = "Single Strike Urshifu V";
 		// let removed = "Single Strike V";
 		// specificPokemonNamesArray.map(specificPokemonName => {
-		// 	let newPokemonName = cardName.replaceAll(specificPokemonName, "");
-		// 	// let newPokemonName = cardName.replaceAll(removed, "");
+		//  let newPokemonName = cardName.replaceAll(specificPokemonName, "");
+		//  // let newPokemonName = cardName.replaceAll(removed, "");
 
-		// 	setOnlyThePokemonName(newPokemonName);
-		// 	console.log("entrou", newPokemonName);
+		//  setOnlyThePokemonName(newPokemonName);
+		//  console.log("entrou", newPokemonName);
 		// });
 
 		// cardName.replace(removed, "");
 
 		// specificPokemonNames.forEach(specificPokemonName => {
-		// 	console.log("specificPokemonName", specificPokemonName);
-		// 	let newPokemonName = pokemonCardDetails.name.replace(specificPokemonName, "");
-		// 	setOnlyThePokemonName(newPokemonName);
+		//  console.log("specificPokemonName", specificPokemonName);
+		//  let newPokemonName = pokemonCardDetails.name.replace(specificPokemonName, "");
+		//  setOnlyThePokemonName(newPokemonName);
 		// });
 	};
 
-	useEffect(() => {
-		if (pokemonCardDetails.supertype === "Pokémon") {
-			try {
-				handleRemovedpokemonName();
-			} finally {
-				changePokemonName();
-			}
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if (pokemonCardDetails.supertype === "Pokémon") {
+	// 		try {
+	// 			handleRemovedpokemonName();
+	// 		} finally {
+	// 			changePokemonName();
+	// 		}
+	// 	}
+	// }, []);
 
 	const importAllPokemonTypeImages = pokemonTypeImages => {
 		let images = {};
@@ -227,8 +268,8 @@ export default function CardDetail({
 		require.context("../assets/images/pokemonTypes", false, /\.(png|jpe?g|svg)$/)
 	);
 
-	const handleSearchCardName = carFinalName => {
-		dispatch(getAllCardsWithSameName(carFinalName));
+	const handleSearchCardName = cardFinalName => {
+		dispatch(getAllCardsWithSameName(cardFinalName));
 	};
 
 	const handleSearchSet = setName => {
@@ -348,7 +389,7 @@ export default function CardDetail({
 
 	const handleRetreatCost = () => {
 		return (
-			<Grid item className={classes.detailSize}>
+			<Grid item className={classes.detailSize} style={{ marginTop: matches ? 20 : 0 }}>
 				<Grid item container direction="column">
 					<Typography variant="detailTitle">RETREAT COST</Typography>
 					<Grid item>
@@ -459,7 +500,7 @@ export default function CardDetail({
 
 	const handleNumber = () => {
 		return (
-			<Grid item>
+			<Grid item style={{ marginBottom: matches && !pokemonCardDetails.flavorText ? 80 : 0 }}>
 				<Grid item container direction="column">
 					<Typography variant="detailTitle">NUMBER</Typography>
 					<Typography variant="detailValue">
@@ -473,12 +514,12 @@ export default function CardDetail({
 	const handleFlavorText = () => {
 		return (
 			pokemonCardDetails.flavorText && (
-				<>
+				<Grid item style={{ marginBottom: matches ? 80 : 0 }}>
 					<hr className={classes.line} />
 					<Grid item sx={{ marginTop: "20px" }}>
 						<Typography variant="p">{pokemonCardDetails.flavorText}</Typography>
 					</Grid>
-				</>
+				</Grid>
 			)
 		);
 	};
@@ -506,9 +547,6 @@ export default function CardDetail({
 						pokemonCardDetails.resistances ? pokemonCardDetails.resistances[0] : null
 					)}
 					{handleRetreatCost()}
-					{/* {handleArtist()}
-					{handleRarity()}
-					{handleSet()} */}
 				</Grid>
 				{handleRules()}
 				<Grid
@@ -523,8 +561,10 @@ export default function CardDetail({
 					{handleRarity()}
 					{handleSet()}
 				</Grid>
-				{handleNumber()}
-				{handleFlavorText()}
+				<Grid item className={classes.detailWrapper}>
+					{handleNumber()}
+					{handleFlavorText()}
+				</Grid>
 			</>
 		);
 	};
@@ -545,7 +585,9 @@ export default function CardDetail({
 					{handleRarity()}
 					{handleSet()}
 				</Grid>
-				{handleNumber()}
+				<Grid item className={classes.detailWrapper}>
+					{handleNumber()}
+				</Grid>
 			</>
 		);
 	};
@@ -581,16 +623,21 @@ export default function CardDetail({
 	};
 
 	return (
-		<Grid container justifyContent="center" alignItems="center">
+		<Grid
+			container
+			direction={matches ? "column" : "row"}
+			justifyContent="center"
+			alignItems="center"
+		>
 			<Grid item>
 				<Grid item container justifyContent="center">
-					<Zoom overlayBgColorEnd="rgba(255, 255, 255, 0.5)" zoomMargin={80}>
+					<Zoom overlayBgColorEnd="rgba(255, 255, 255, 0.5)">
 						<Grid
 							item
 							container
 							justifyContent="center"
-							sx={{
-								marginBottom: 7,
+							style={{
+								marginBottom: 15,
 							}}
 						>
 							<div className={classes.cardImageContainer}>
@@ -599,9 +646,8 @@ export default function CardDetail({
 										display: !flipCard ? "flex" : "none",
 										alignItems: "center",
 										justifyContent: "center",
-										height: "100%",
-										width: 734,
-										height: flipCard ? 0 : 725,
+										width: matches ? "auto" : 734,
+										height: flipCard ? 0 : "100%",
 									}}
 								>
 									<img
@@ -612,13 +658,14 @@ export default function CardDetail({
 										}}
 									/>
 								</div>
+
 								<div
 									className={
 										!flipCard ? classes.cardInnerFlip : classes.cardInner
 									}
 									style={{
-										height: !flipCard ? 0 : 725,
-										width: 734,
+										width: matches ? "auto" : 734,
+										height: !flipCard ? 0 : "100%",
 									}}
 								>
 									<div
@@ -645,7 +692,14 @@ export default function CardDetail({
 						</Grid>
 					</Zoom>
 					<Grid item className={classes.blockWrapper}>
-						<Grid item container justifyContent="space-between">
+						<Grid
+							item
+							container
+							direction={matches ? "column" : "row"}
+							alignItems="center"
+							justifyContent={matches ? "center" : "space-between"}
+							style={{ padding: matches ? 15 : 0 }}
+						>
 							<Grid item>
 								<Grid item container direction="column" sx={{ marginBottom: 2 }}>
 									<Typography variant="cardName">
@@ -679,20 +733,51 @@ export default function CardDetail({
 										</Grid>
 									</Grid>
 								)}
-								<Grid
-									item
-									component={Link}
-									to={`/search/${onlyThePokemonName.toLowerCase()}`}
-									sx={{ color: "#1A202C" }}
-									onClick={() => {
-										setCardName(onlyThePokemonName.toLowerCase());
-										handleSearchCardName(onlyThePokemonName.toLowerCase());
-									}}
-								>
-									<Typography variant="h6" className={classes.anchor}>
-										Other {onlyThePokemonName} Cards
-									</Typography>
-								</Grid>
+								{pokemonCardDetails.supertype === "Pokémon" ? (
+									pokemonCardDetails.nationalPokedexNumbers.map(e => (
+										<Grid
+											item
+											component={Link}
+											to={`/search/${allPokemonNameData[
+												e - 1
+											].name.toLocaleLowerCase()}`}
+											sx={{ color: "#1A202C" }}
+											onClick={() => {
+												setCardName(
+													allPokemonNameData[
+														e - 1
+													].name.toLocaleLowerCase()
+												);
+												handleSearchCardName(
+													allPokemonNameData[
+														e - 1
+													].name.toLocaleLowerCase()
+												);
+											}}
+										>
+											<Typography variant="h6" className={classes.anchor}>
+												Other {allPokemonNameData[e - 1].name} Cards
+											</Typography>
+										</Grid>
+									))
+								) : (
+									<Grid
+										item
+										component={Link}
+										to={`/search/${fixedCardName.split(" ").join(".")}`}
+										sx={{ color: "#1A202C" }}
+										onClick={() => {
+											setCardName(fixedCardName.split(" ").join("."));
+											handleSearchCardName(
+												fixedCardName.split(" ").join(".")
+											);
+										}}
+									>
+										<Typography variant="h6" className={classes.anchor}>
+											Other {pokemonCardDetails.name} Cards
+										</Typography>
+									</Grid>
+								)}
 							</Grid>
 
 							<hr className={classes.line} />

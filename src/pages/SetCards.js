@@ -7,10 +7,19 @@ import pokemon from "pokemontcgsdk";
 import { getSet } from "../store/actions/setsActions";
 import { useDispatch, useSelector } from "react-redux";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { createTheme } from "@mui/material/styles";
 
 pokemon.configure({ apiKey: process.env.REACT_APP_POKEMONTCG_KEY });
 
-const useStyles = makeStyles(theme => ({
+const theme = createTheme();
+const useStyles = makeStyles(() => ({
+	container: {
+		minHeight: "85vh",
+		marginBottom: "10%",
+		[theme.breakpoints.down("md")]: {
+			marginBottom: "75%",
+		},
+	},
 	cardsWrapper: {
 		marginTop: "2em",
 		maxWidth: "90em",
@@ -44,7 +53,13 @@ export default function SetCards({ pokemonSetData, setPokemonCardDetails }) {
 	// const matchesMD = useMediaQuery(theme => theme.breakpoints.down("sm"));
 	console.log("pokemonCards", data);
 	return data ? (
-		<Grid container justifyContent="center" alignItems="center" direction="column">
+		<Grid
+			container
+			justifyContent="center"
+			alignItems="center"
+			direction="column"
+			className={classes.container}
+		>
 			<Grid item>
 				<img src={data[0].set.images.logo} alt={"Set logo"} className={classes.setLogo} />
 			</Grid>

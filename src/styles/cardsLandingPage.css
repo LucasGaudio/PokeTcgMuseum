@@ -1,0 +1,14 @@
+.landingPageCardEven {
+	margin-left: -5%;
+}
+
+.landingPageCardOdd {
+	margin-left: 5%;
+}
+
+.landingPageCardUp {
+	margin-top: 9%;
+}
+.landingPageCardDown {
+	margin-bottom: 9%;
+}

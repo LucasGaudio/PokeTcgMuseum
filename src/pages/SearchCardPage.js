@@ -6,8 +6,17 @@ import { useSelector } from "react-redux";
 import { getAllCardsWithSameName } from "../store/actions/setsActions";
 import Card from "../components/Card";
 import Loading from "../components/Loading";
+import { createTheme } from "@mui/material/styles";
 
-const useStyles = makeStyles(theme => ({
+const theme = createTheme();
+const useStyles = makeStyles(() => ({
+	container: {
+		minHeight: "85vh",
+		marginBottom: "10%",
+		[theme.breakpoints.down("md")]: {
+			marginBottom: "75%",
+		},
+	},
 	cardsWrapper: {
 		marginTop: "2em",
 		maxWidth: "90em",
@@ -21,7 +30,13 @@ export default function SearchCardPage({ cardName, setPokemonCardDetails }) {
 	const { data, error } = useSelector(state => state.pokedex);
 
 	return data ? (
-		<Grid container justifyContent="center" alignItems="center" direction="column">
+		<Grid
+			container
+			justifyContent="center"
+			alignItems="center"
+			direction="column"
+			className={classes.container}
+		>
 			<Grid item>
 				<Grid
 					item

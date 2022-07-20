@@ -1,16 +1,21 @@
 import React from "react";
 import { makeStyles, useTheme } from "@mui/styles";
-import useMediaQuerry from "@mui/material/useMediaQuery";
+import { createTheme } from "@mui/material/styles";
 import { Grid, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
-	cardsWrapper: {
-		marginTop: "2em",
-		maxWidth: "101em",
-	},
+import backgroundImage from "../assets/images/frame.png";
+
+const theme = createTheme();
+const useStyles = makeStyles(() => ({
 	cardWrapper: {
-		width: "20%",
+		padding: 20,
+		maxWidth: "100%",
+		// width: "25%",
+		// backgroundImage: `url(${backgroundImage})`,
+		// backgroundRepeat: "no-repeat",
+		// backgroundAttachment: "fixed",
+		// backgroundSize: "cover",
 	},
 	cardDiv: {
 		flex: "none",
@@ -35,13 +40,21 @@ const useStyles = makeStyles(theme => ({
 			transform: "scale(1.1)",
 		},
 	},
+	moveCardEven: {
+		width: "100px",
+	},
+
+	moveCardOdd: {
+		width: "99px",
+	},
 }));
 
-export default function CardsLandingPage({ data, path, onClickFunction, isEven }) {
+export default function CardsLandingPage({ data, path, onClickFunction, isEven, index }) {
 	const classes = useStyles();
 	const theme = useTheme();
 
-	const evenOrOdd = isEven ? "Even" : "Odd";
+	const evenOrOdd = isEven ? "landingPageCardEven" : "landingPageCardOdd";
+	const rowIndex = index === 0 || index === 1 ? "landingPageCardUp" : "landingPageCardDown";
 
 	return data ? (
 		<Grid
@@ -56,7 +69,7 @@ export default function CardsLandingPage({ data, path, onClickFunction, isEven }
 			<div className={classes.cardDiv}>
 				<div className={classes.cardAnchor} alt={data.id}>
 					<img
-						className={"moveCard" + evenOrOdd}
+						className={`landingPageCard ${evenOrOdd} ${rowIndex}`}
 						src={data.images.small}
 						alt={data.name}
 					/>

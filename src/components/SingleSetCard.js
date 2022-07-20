@@ -7,10 +7,13 @@ import { Grid, Typography, Card } from "@mui/material";
 import pokemon from "pokemontcgsdk";
 import dayjs from "dayjs";
 import { getSet } from "../store/actions/setsActions";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { createTheme } from "@mui/material/styles";
 
 pokemon.configure({ apiKey: process.env.REACT_APP_POKEMONTCG_KEY });
 
-const useStyles = makeStyles(theme => ({
+const theme = createTheme();
+const useStyles = makeStyles(() => ({
 	setWrapper: {
 		textDecoration: "none",
 		padding: 10,
@@ -19,13 +22,21 @@ const useStyles = makeStyles(theme => ({
 			transition: "all .2s ease-in-out",
 			transform: "scale(1.1)",
 		},
+		[theme.breakpoints.down("md")]: {
+			padding: 14,
+		},
 	},
 	setCard: {
-		width: "28em",
+		width: "27em",
 		height: "20.5em",
 		margin: "0.75rem",
 		borderRadius: 5,
-		backgroundColor: "#252F3F",
+		// backgroundColor: "#252F3F",
+		backgroundColor: "#351e10",
+		[theme.breakpoints.down("md")]: {
+			width: "100%",
+			margin: 0,
+		},
 	},
 	setImageWrapper: {
 		textAlign: "center",
@@ -86,6 +97,8 @@ const useStyles = makeStyles(theme => ({
 export default function SingleSetCard({ set, setPokemonSetData }) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
+
+	const matchesMd = useMediaQuery(theme.breakpoints.down("md"));
 
 	const formats = Object.entries(set.legalities).slice(1);
 

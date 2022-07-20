@@ -1,15 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
-import { TextField, Stack } from "@mui/material";
+import { TextField, Stack, useTheme } from "@mui/material";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import allPokemonNameData from "../assets/json/allPokemonNames.json";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCardsWithSameName } from "../store/actions/setsActions";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { ClassNames } from "@emotion/react";
 
-export default function PokemonForm() {
+export default function PokemonForm({ header }) {
 	const [inputText, setInputText] = useState("");
+	const theme = useTheme();
+	const matchesSm = useMediaQuery(theme.breakpoints.down("sm"));
 
-	const inputRef = useRef();
+	const landingPageSize = matchesSm ? 350 : 500;
+
+	const headerSize = matchesSm ? 200 : 300;
+
+	const inputRef = useRef("");
 	const navigate = useNavigate();
 
 	const dispatch = useDispatch();
@@ -22,31 +30,26 @@ export default function PokemonForm() {
 	const navigateToPokemon = e => {
 		e.preventDefault();
 
+		//Nao sei porque nao esta funcionando para limpar a ref
+		inputRef.current.value = "";
+
+		const eraseButton = document.getElementsByClassName("MuiAutocomplete-clearIndicator")[0];
+		eraseButton && eraseButton.click();
+
 		let cardName = inputRef.current.children[1].children[0].value.toLowerCase();
 		// inputRef.current.reset();
 
 		dispatch(getAllCardsWithSameName(cardName), navigate(`/search/${cardName}`));
-		inputRef.current.children[1].children[0].value = "";
 	};
 
 	const handleSubmit = e => {
-		console.log("test", inputRef.current);
 		navigateToPokemon(e);
 
 		// navigate(`/search/${inputRef.current.children[1].children[0].value.toLowerCase()}`);
 	};
 
-	const handleEnterPress = e => {
-		console.log("Entrou um pouco");
-
-		if (e.key === "Enter") {
-			console.log("Entrou total");
-			navigateToPokemon(e);
-		}
-	};
-
 	return (
-		<Stack spacing={2} sx={{ width: 500 }}>
+		<Stack spacing={2} sx={{ width: header ? headerSize : landingPageSize }}>
 			<form onSubmit={e => handleSubmit(e)}>
 				<Autocomplete
 					id="all-pokemon-names"
@@ -60,10 +63,7 @@ export default function PokemonForm() {
 							variant="filled"
 							ref={inputRef}
 							color="success"
-							style={{
-								// backgroundColor: "#598b1f",
-								borderRadius: 20,
-							}}
+							style={{ backgroundColor: "#E5E3DA", borderRadius: "25px" }}
 						/>
 					)}
 				/>

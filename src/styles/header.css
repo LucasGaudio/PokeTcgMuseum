@@ -7,6 +7,10 @@
 .logoContainer:hover {
 	background-color: "transparent";
 }
+
+.tabsWrapper {
+	max-width: 876px;
+}
 .tabWrapper {
 	text-decoration: none;
 	color: #fff;

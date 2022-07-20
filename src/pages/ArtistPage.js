@@ -6,11 +6,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { getArtist } from "../store/actions/setsActions";
 import Card from "../components/Card";
 import Loading from "../components/Loading";
+import { createTheme } from "@mui/material/styles";
 
-const useStyles = makeStyles(theme => ({
+const theme = createTheme();
+const useStyles = makeStyles(() => ({
+	container: {
+		minHeight: "85vh",
+	},
 	cardsWrapper: {
 		marginTop: "2em",
 		maxWidth: "90em",
+		marginBottom: "15%",
+		[theme.breakpoints.down("md")]: {
+			marginBottom: "75%",
+		},
 	},
 }));
 
@@ -26,7 +35,13 @@ export default function ArtistPage({ pokemonCardArtist, setPokemonCardDetails })
 	// }, []);
 
 	return data ? (
-		<Grid container justifyContent="center" alignItems="center" direction="column">
+		<Grid
+			container
+			justifyContent="center"
+			alignItems="center"
+			direction="column"
+			className={classes.container}
+		>
 			<Grid item>
 				<Grid
 					item

@@ -2,13 +2,33 @@ import React from "react";
 import { makeStyles, useTheme } from "@mui/styles";
 import useMediaQuerry from "@mui/material/useMediaQuery";
 import { Grid, Typography } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
 
-const useStyles = makeStyles(theme => ({
+const theme = createTheme();
+const useStyles = makeStyles(() => ({
 	footer: {
-		backgroundColor: "#161B22",
+		backgroundColor: "#691B07",
 		bottom: 0,
-		marginTop: "13.8rem",
-		padding: "3rem 1.5rem 6rem",
+		width: "100%",
+		position: "absolute",
+		marginTop: "auto",
+		[theme.breakpoints.down("md")]: {
+			display: "block",
+			bottom: "auto",
+		},
+	},
+	footerContent: {
+		padding: "3rem",
+		width: "100%",
+		[theme.breakpoints.down("md")]: {
+			padding: "1rem",
+		},
+	},
+	footerText: {
+		[theme.breakpoints.down("md")]: {
+			width: "inherit",
+			textAlign: "center",
+		},
 	},
 }));
 
@@ -18,28 +38,37 @@ export default function () {
 
 	return (
 		<footer className={classes.footer}>
-			<Grid item container direction="column" alignItems="center" justifyContent="flex-end">
-				<Typography variant="footerText">
-					Pokémon Card Collection by{" "}
+			<Grid
+				item
+				container
+				direction="column"
+				alignItems="center"
+				justifyContent="flex-end"
+				className={classes.footerContent}
+			>
+				<Typography variant="footerText" className={classes.footerText}>
+					Poke TCG Museum by{" "}
 					<a
 						href="https://www.linkedin.com/in/lucas-gaudio-09698aa5/"
 						title="linkedin"
 						target="_blank"
+						style={{ color: "#485fc7" }}
 					>
 						Lucas Gaudio
 					</a>
 				</Typography>
-				<Typography variant="footerText">
+				<Typography variant="footerText" className={classes.footerText}>
 					All data made available by the{" "}
 					<a
 						href="https://pokemontcg.io/"
 						title="pokemon tcg api documentation"
 						target="_blank"
+						style={{ color: "#485fc7" }}
 					>
 						Pokémon TCG API
 					</a>
 				</Typography>
-				<Typography variant="footerText">
+				<Typography variant="footerText" className={classes.footerText}>
 					This website is not produced, endorsed, supported, or affiliated with Nintendo
 					or The Pokémon Company.
 				</Typography>

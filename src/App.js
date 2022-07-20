@@ -6,9 +6,9 @@ import Loading from "./components/Loading";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./components/ui/Theme";
 import "./styles/index.css";
-import "./styles/animation.css";
+import "./styles/cardsLandingPage.css";
 import "./styles/header.css";
-
+import ScrollToTop from "./components/ScrollToTop";
 import RandomCardRedirect from "./pages/RandomCardRedirect";
 
 const LandingPage = React.lazy(() =>
@@ -90,6 +90,9 @@ function App() {
 		}
 	});
 
+	const [value, setValue] = useState(0);
+	const [selectedIndex, setSelectedIndex] = useState(0);
+
 	useEffect(() => {
 		localStorage.setItem("@Sets:set", JSON.stringify(pokemonSetData));
 		localStorage.setItem("@Card:cardDetail", JSON.stringify(pokemonCardDetails));
@@ -100,69 +103,80 @@ function App() {
 		<React.Suspense fallback={<Loading />}>
 			<ThemeProvider theme={theme}>
 				<BrowserRouter>
-					<Header />
-					<Routes>
-						<Route
-							exact
-							path="/"
-							element={<LandingPage setPokemonCardDetails={setPokemonCardDetails} />}
+					<ScrollToTop>
+						<Header
+							value={value}
+							setValue={setValue}
+							selectedIndex={selectedIndex}
+							setSelectedIndex={setSelectedIndex}
 						/>
-						<Route
-							exact
-							path="/sets"
-							element={<AllSetsPage setPokemonSetData={setPokemonSetData} />}
-						/>
-						<Route
-							exact
-							path="/set/:name"
-							element={
-								<SetCards
-									pokemonSetData={pokemonSetData}
-									setPokemonCardDetails={setPokemonCardDetails}
-								/>
-							}
-						/>
-						<Route
-							exact
-							path="/card/:name/:id"
-							element={
-								<CardDetail
-									pokemonCardDetails={pokemonCardDetails}
-									setPokemonCardArtist={setPokemonCardArtist}
-									setPokemonSetData={setPokemonSetData}
-									setCardName={setCardName}
-								/>
-							}
-						/>
-						<Route
-							exact
-							path="/artist/:name"
-							element={
-								<ArtistPage
-									pokemonCardArtist={pokemonCardArtist}
-									setPokemonCardDetails={setPokemonCardDetails}
-								/>
-							}
-						/>
-						<Route
-							exact
-							path="/search/:name"
-							element={
-								<SearchCardPage
-									cardName={cardName}
-									setPokemonCardDetails={setPokemonCardDetails}
-								/>
-							}
-						/>
-						<Route
-							exact
-							path="/card"
-							element={
-								<RandomCardRedirect setPokemonCardDetails={setPokemonCardDetails} />
-							}
-						/>
-					</Routes>
-					{/* <Footer /> */}
+						<Routes>
+							<Route
+								exact
+								path="/"
+								element={
+									<LandingPage setPokemonCardDetails={setPokemonCardDetails} />
+								}
+							/>
+							<Route
+								exact
+								path="/sets"
+								element={<AllSetsPage setPokemonSetData={setPokemonSetData} />}
+							/>
+							<Route
+								exact
+								path="/set/:name"
+								element={
+									<SetCards
+										pokemonSetData={pokemonSetData}
+										setPokemonCardDetails={setPokemonCardDetails}
+									/>
+								}
+							/>
+							<Route
+								exact
+								path="/card/:name/:id"
+								element={
+									<CardDetail
+										pokemonCardDetails={pokemonCardDetails}
+										setPokemonCardArtist={setPokemonCardArtist}
+										setPokemonSetData={setPokemonSetData}
+										setCardName={setCardName}
+									/>
+								}
+							/>
+							<Route
+								exact
+								path="/artist/:name"
+								element={
+									<ArtistPage
+										pokemonCardArtist={pokemonCardArtist}
+										setPokemonCardDetails={setPokemonCardDetails}
+									/>
+								}
+							/>
+							<Route
+								exact
+								path="/search/:name"
+								element={
+									<SearchCardPage
+										cardName={cardName}
+										setPokemonCardDetails={setPokemonCardDetails}
+									/>
+								}
+							/>
+							<Route
+								exact
+								path="/card"
+								element={
+									<RandomCardRedirect
+										setPokemonCardDetails={setPokemonCardDetails}
+									/>
+								}
+							/>
+						</Routes>
+						<Footer />
+					</ScrollToTop>
 				</BrowserRouter>
 			</ThemeProvider>
 		</React.Suspense>
