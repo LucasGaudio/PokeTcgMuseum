@@ -173,7 +173,10 @@ export default function Header(props) {
 
 	return (
 		<Box sx={{ flexGrow: 1, marginBottom: 5 }}>
-			<AppBar position="static" sx={{ backgroundColor: "#691b07", padding: "0 50px" }}>
+			<AppBar
+				position="static"
+				sx={{ backgroundColor: "#691b07", padding: !matchesSm && "0 50px" }}
+			>
 				<Toolbar>
 					<Grid container justifyContent="space-between" alignItems="center" sx={{}}>
 						<Grid item md={6} style={{ display: "flex", alignItems: "center" }}>
