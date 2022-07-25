@@ -12,3 +12,18 @@
 .landingPageCardDown {
 	margin-bottom: 9%;
 }
+
+@media (max-height: 900px) {
+	.landingPageCardEven {
+		width: 70%;
+		margin-left: 21%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.landingPageCardOdd {
+		margin-left: -21%;
+		width: 70%;
+	}
+}

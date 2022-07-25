@@ -13,8 +13,6 @@ export default function PokemonForm({ header }) {
 	const theme = useTheme();
 	const matchesSm = useMediaQuery(theme.breakpoints.down("sm"));
 
-	const landingPageSize = matchesSm ? 350 : 500;
-
 	const headerSize = matchesSm ? 200 : 300;
 
 	const inputRef = useRef("");
@@ -49,7 +47,7 @@ export default function PokemonForm({ header }) {
 	};
 
 	return (
-		<Stack spacing={2} sx={{ width: header ? headerSize : landingPageSize }}>
+		<Stack spacing={2} sx={{ width: header ? headerSize : "100%" }}>
 			<form onSubmit={e => handleSubmit(e)}>
 				<Autocomplete
 					id="all-pokemon-names"
@@ -63,7 +61,11 @@ export default function PokemonForm({ header }) {
 							variant="filled"
 							ref={inputRef}
 							color="success"
-							style={{ backgroundColor: "#E5E3DA", borderRadius: "25px" }}
+							fullWidth
+							style={{
+								backgroundColor: "#E5E3DA",
+								borderRadius: "20px",
+							}}
 						/>
 					)}
 				/>

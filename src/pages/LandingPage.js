@@ -14,12 +14,16 @@ import CardsLandingPage from "../components/CardsLandingPage";
 import Loading from "../components/Loading";
 
 import backgroundImage from "../assets/images/frame.png";
+import logoLandPage from "../assets/images/logo-landPage.png";
 
 const theme = createTheme();
 const useStyles = makeStyles(() => ({
 	container: {
 		// minHeight: "85vh",
 		minHeight: "60vh",
+		[theme.breakpoints.down("lg")]: {
+			// marginBottom: "10%",
+		},
 		[theme.breakpoints.down("md")]: {
 			minHeight: "65vh",
 		},
@@ -37,6 +41,18 @@ const useStyles = makeStyles(() => ({
 	},
 	testColor: {
 		color: theme.palette.primary.main,
+	},
+	logo: {
+		width: "70%",
+		maxWidth: 705,
+		marginBottom: 20,
+		[theme.breakpoints.down("md")]: {
+			width: "90%",
+		},
+	},
+	formContainer: {
+		width: "65%",
+		maxWidth: "660px !important",
 	},
 }));
 
@@ -85,17 +101,13 @@ export default function LandingPage({ setPokemonCardDetails }) {
 			alignItems="center"
 			justifyContent="space-evenly"
 			className={classes.container}
+			id="landPageContainer"
 		>
 			<Grid item xs={6} style={{ minHeight: "100%" }}>
 				<Grid item container direction="column" alignItems="center" justifyContent="center">
-					<Typography variant="detailValue" className={classes.testColor}>
-						Poke TCG Museum
-					</Typography>
-					<Typography className={classes.testColor}>
-						Go through the Pokémon TCG History{" "}
-					</Typography>
-					<Grid item>
-						<PokemonForm />
+					<img src={logoLandPage} alt="logo land page" className={classes.logo} />
+					<Grid item className={classes.formContainer}>
+						<PokemonForm style={{ width: "100%" }} />
 					</Grid>
 				</Grid>
 			</Grid>

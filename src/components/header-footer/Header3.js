@@ -31,10 +31,13 @@ import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 
 import logo from "../../assets/images/smeargle.svg";
+import logoText from "../../assets/images/logoText.png";
+
 import pokeball from "../../assets/images/Balls/Pokeball_icon.png";
 import greatball from "../../assets/images/Balls/Great_Ball_icon.png";
 import ultraball from "../../assets/images/Balls/Ultra_Ball_icon.png";
 import masterball from "../../assets/images/Balls/Master_Ball_icon.png";
+
 import { ClassNames } from "@emotion/react";
 
 export default function Header(props) {
@@ -113,7 +116,7 @@ export default function Header(props) {
 						onClick={() => route.name === "Random Card" && handleRandomCardClick()}
 					>
 						<img alt={route.alt} src={route.image} className={"ballMenu"} />
-						<Tab label={route.name} style={{ minWidth: 40 }} />
+						<Tab label={route.name} style={{ minWidth: 35 }} />
 					</Link>
 				))}
 			</Grid>
@@ -181,6 +184,12 @@ export default function Header(props) {
 								disableRipple
 							>
 								<img alt="company logo" src={logo} className={"logo"} />
+								<img
+									alt="company logo"
+									src={logoText}
+									className={"logoText"}
+									style={{ maxWidth: 160, marginLeft: 20 }}
+								/>
 							</Button>
 						</Grid>
 

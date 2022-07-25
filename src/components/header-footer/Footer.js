@@ -7,15 +7,16 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme();
 const useStyles = makeStyles(() => ({
 	footer: {
-		backgroundColor: "#691B07",
-		bottom: 0,
-		width: "100%",
-		position: "absolute",
-		marginTop: "auto",
-		[theme.breakpoints.down("md")]: {
-			display: "block",
-			bottom: "auto",
-		},
+		// backgroundColor: "#691B07",
+		// bottom: 0,
+		// width: "100%",
+		// position: "absolute",
+		// marginTop: "auto",
+		// zIndex: "-1",
+		// [theme.breakpoints.down("md")]: {
+		// 	display: "block",
+		// 	bottom: "auto",
+		// },
 	},
 	footerContent: {
 		padding: "3rem",

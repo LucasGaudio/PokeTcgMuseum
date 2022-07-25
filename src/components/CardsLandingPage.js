@@ -11,11 +11,6 @@ const useStyles = makeStyles(() => ({
 	cardWrapper: {
 		padding: 20,
 		maxWidth: "100%",
-		// width: "25%",
-		// backgroundImage: `url(${backgroundImage})`,
-		// backgroundRepeat: "no-repeat",
-		// backgroundAttachment: "fixed",
-		// backgroundSize: "cover",
 	},
 	cardDiv: {
 		flex: "none",
@@ -24,6 +19,9 @@ const useStyles = makeStyles(() => ({
 	cardAnchor: {
 		cursor: "pointer",
 		textDecoration: "none",
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
 	},
 	cardImage: {
 		width: "100%",
