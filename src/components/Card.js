@@ -10,10 +10,11 @@ const theme = createTheme();
 const useStyles = makeStyles(() => ({
 	cardDiv: {
 		flex: "none",
-		width: "90%",
-		margin: 1,
+		width: "auto",
+		margin: 15,
 		[theme.breakpoints.down("md")]: {
 			width: "30%",
+			margin: 2,
 		},
 	},
 	cardAnchor: {
