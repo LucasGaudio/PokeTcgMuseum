@@ -30,6 +30,14 @@ export default function ArtistPage({ pokemonCardArtist, setPokemonCardDetails })
 	const dispatch = useDispatch();
 	const { data, error } = useSelector(state => state.pokedex);
 
+	useEffect(() => {
+		// if (!data) {
+		const currentUrl = window.location.href;
+		const lastWord = currentUrl.split("/").pop();
+		dispatch(getArtist(lastWord));
+		// }
+	}, []);
+
 	// useEffect(() => {
 	// 	dispatch(getArtist(pokemonCardArtist));
 	// }, []);
@@ -53,13 +61,12 @@ export default function ArtistPage({ pokemonCardArtist, setPokemonCardDetails })
 					{data !== null &&
 						data.map(card => {
 							return (
-								<div key={card.id}>
-									<Card
-										data={card}
-										path="card"
-										onClickFunction={setPokemonCardDetails}
-									/>
-								</div>
+								<Card
+									key={card.id}
+									data={card}
+									path="card"
+									onClickFunction={setPokemonCardDetails}
+								/>
 							);
 						})}
 				</Grid>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { Link } from "react-router-dom";
-import { Grid, Typography, useTheme } from "@mui/material";
+import { Grid, Typography, useTheme, CircularProgress } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { getAllCardsWithSameName, getSet, getArtist } from "../store/actions/setsActions";
 import { createTheme } from "@mui/material/styles";
@@ -9,8 +9,11 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import allPokemonNameData from "../assets/json/allPokemonNames.json";
+import pokemon from "pokemontcgsdk";
 
 import defaultCardImage from "../assets/images/card_back_side.png";
+
+pokemon.configure({ apiKey: process.env.REACT_APP_POKEMONTCG_KEY });
 
 const theme = createTheme();
 const useStyles = makeStyles(() => ({
@@ -120,7 +123,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function CardDetail({
-	pokemonCardDetails,
+	pokemonCardData,
 	setPokemonCardArtist,
 	setPokemonSetData,
 	setCardName,
@@ -129,12 +132,50 @@ export default function CardDetail({
 	const theme = useTheme();
 	const matches = useMediaQuery(theme.breakpoints.down("md"));
 
-	const [onlyThePokemonName, setOnlyThePokemonName] = useState(pokemonCardDetails.name);
+	let pokemonCardDataFromURL;
+	const [pokemonCardDataFromURLState, setPokemonCardDataFromURLState] = useState([]);
+
+	const [pokemonCardDetails, setPokemonCardDetails] = useState();
+	console.log("pokemonCardDetailssss", pokemonCardDetails);
+
+	useEffect(() => {
+		const currentUrl = window.location.href;
+		const lastWord = currentUrl.split("/").pop();
+		console.log("entrouuuu");
+
+		pokemon.card.find(lastWord).then(card => {
+			console.log("lastWord", card);
+			pokemonCardDataFromURL = card;
+			setPokemonCardDataFromURLState(card);
+			setPokemonCardDetails(card);
+		});
+	}, []);
+
+	console.log("pokemonCardDataFromURL", pokemonCardDataFromURL);
+	console.log("pokemonCardDataFromURLState", pokemonCardDataFromURLState);
+
+	// const pokemonCardDetails = pokemonCardData ? pokemonCardData : pokemonCardDataFromURLState
+
+	const [onlyThePokemonName, setOnlyThePokemonName] = useState(
+		pokemonCardDetails && pokemonCardDetails.name
+	);
 	const [flipCard, setFlipCard] = useState(false);
 
-	const fixedCardName = pokemonCardDetails.name.toLowerCase();
+	const fixedCardName = pokemonCardDetails && pokemonCardDetails.name.toLowerCase();
 
-	console.log("onlyThePokemonName", onlyThePokemonName.toLowerCase().replace(/ /g, "+"));
+	// useEffect(() => {
+
+	// 	const currentUrl = window.location.href;
+	// 	const lastWord = currentUrl.split("/").pop();
+	// 	console.log( "lastWord", lastWord)
+
+	// 	pokemon.card.find(lastWord).then(card => {
+	// 		return card
+	// 	});
+
+	// }, []);
+
+	// console.log("onlyThePokemonName", onlyThePokemonName.toLowerCase().replace(/ /g, "+"));
 
 	const dispatch = useDispatch();
 
@@ -443,6 +484,9 @@ export default function CardDetail({
 						onClick={() => {
 							handleSearchArtist(pokemonCardDetails.artist);
 						}}
+						onAuxClick={() => {
+							handleSearchArtist(pokemonCardDetails.artist);
+						}}
 					>
 						<Typography variant="detailValue" className={classes.anchor}>
 							{pokemonCardDetails.artist}
@@ -477,6 +521,9 @@ export default function CardDetail({
 						onClick={() => {
 							// setPokemonSetData(pokemonCardDetails.set);
 							//TODO revisar porque pode não estar perfeito
+							handleSearchSet(pokemonCardDetails.set.id);
+						}}
+						onAuxClick={() => {
 							handleSearchSet(pokemonCardDetails.set.id);
 						}}
 					>
@@ -622,7 +669,7 @@ export default function CardDetail({
 		}
 	};
 
-	return (
+	return pokemonCardDetails ? (
 		<Grid
 			container
 			direction={matches ? "column" : "row"}
@@ -790,6 +837,10 @@ export default function CardDetail({
 					</Grid>
 				</Grid>
 			</Grid>
+		</Grid>
+	) : (
+		<Grid item container justifyContent="center" alignItems="center" style={{ height: "90vh" }}>
+			<CircularProgress />
 		</Grid>
 	);
 }

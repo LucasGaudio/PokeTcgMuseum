@@ -18,6 +18,8 @@ const setError = err => {
 };
 
 export const getArtist = artist => {
+	const artistReplaced = artist.replace("%20", ".");
+
 	return async dispatch => {
 		dispatch({
 			type: GET_ARTIST,
@@ -25,7 +27,7 @@ export const getArtist = artist => {
 		});
 		try {
 			pokemon.card
-				.all({ q: `artist:${artist.replace(/ /g, ".")}`, orderBy: "set.releaseDate" })
+				.all({ q: `artist:${artistReplaced}`, orderBy: "set.releaseDate" })
 				.then(result => {
 					const resData = result;
 

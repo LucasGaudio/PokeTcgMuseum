@@ -39,16 +39,22 @@ export default function SetCards({ pokemonSetData, setPokemonCardDetails }) {
 	const dispatch = useDispatch();
 	const { data, error } = useSelector(state => state.pokedex);
 
-	const [pokemonCards, setPokemonCards] = useState(() => {
-		const storageCountry = localStorage.getItem("@Sets:set");
-		if (storageCountry) {
-			return JSON.parse(storageCountry);
-		} else {
-			return [];
-		}
-	});
+	// const [pokemonCards, setPokemonCards] = useState(() => {
+	// 	const storageCountry = localStorage.getItem("@Sets:set");
+	// 	if (storageCountry) {
+	// 		return JSON.parse(storageCountry);
+	// 	} else {
+	// 		return [];
+	// 	}
+	// });
 
-	console.log("pokemonCards Test", pokemonCards);
+	useEffect(() => {
+		const currentUrl = window.location.href;
+		const lastWord = currentUrl.split("/").pop();
+		dispatch(getSet(lastWord));
+	}, []);
+
+	// console.log("pokemonCards Test", pokemonCards);
 
 	// const matchesMD = useMediaQuery(theme => theme.breakpoints.down("sm"));
 	console.log("pokemonCards", data);
@@ -74,13 +80,12 @@ export default function SetCards({ pokemonSetData, setPokemonCardDetails }) {
 					{data !== null &&
 						data.map(card => {
 							return (
-								<div key={card.id}>
-									<Card
-										data={card}
-										path="card"
-										onClickFunction={setPokemonCardDetails}
-									/>
-								</div>
+								<Card
+									key={card.id}
+									data={card}
+									path="card"
+									onClickFunction={setPokemonCardDetails}
+								/>
 							);
 						})}
 				</Grid>

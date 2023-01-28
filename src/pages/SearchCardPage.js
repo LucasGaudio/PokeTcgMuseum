@@ -48,13 +48,12 @@ export default function SearchCardPage({ cardName, setPokemonCardDetails }) {
 					{data !== null &&
 						data.map(card => {
 							return (
-								<div key={card.id}>
-									<Card
-										data={card}
-										path="card"
-										onClickFunction={setPokemonCardDetails}
-									/>
-								</div>
+								<Card
+									key={card.id}
+									data={card}
+									path="card"
+									onClickFunction={setPokemonCardDetails}
+								/>
 							);
 						})}
 				</Grid>

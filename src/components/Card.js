@@ -11,9 +11,9 @@ const useStyles = makeStyles(() => ({
 	cardDiv: {
 		flex: "none",
 		width: "90%",
-		margin: 16,
+		margin: 1,
 		[theme.breakpoints.down("md")]: {
-			width: "45%",
+			width: "30%",
 		},
 	},
 	cardAnchor: {
@@ -21,8 +21,6 @@ const useStyles = makeStyles(() => ({
 		textDecoration: "none",
 	},
 	cardImage: {
-		width: "113%",
-		height: "auto",
 		borderRadius: 10,
 		display: "inline",
 		cursor: "pointer",
@@ -35,8 +33,10 @@ const useStyles = makeStyles(() => ({
 			transform: "scale(1.1)",
 		},
 		[theme.breakpoints.down("md")]: {
-			width: 155,
-			height: 222,
+			width: "90%",
+			height: "100%",
+			// marginRight: 10,
+			marginBottom: 10,
 		},
 	},
 }));
@@ -48,17 +48,15 @@ export default function Card({ data, path, onClickFunction }) {
 
 	return (
 		<Grid
-			item
 			component={Link}
-			variant="contained"
+			// variant="contained"
 			to={`/${path}/${data.name.toLowerCase()}/${data.id}`}
 			onClick={() => onClickFunction(data)}
 			onAuxClick={() => onClickFunction(data)}
+			className={classes.cardDiv}
 		>
-			<div className={classes.cardDiv}>
-				<div className={classes.cardAnchor} alt={data.id}>
-					<img className={classes.cardImage} src={data.images.small} alt={data.name} />
-				</div>
+			<div className={classes.cardAnchor} alt={data.id}>
+				<img className={classes.cardImage} src={data.images.small} alt={data.name} />
 			</div>
 		</Grid>
 	);
